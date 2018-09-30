@@ -1,0 +1,35 @@
+{
+  "name": "build",
+  "version": "1.0.1",
+  "description": "Build toolkit for net",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/hattie019425/net.git"
+  },
+  "keywords": [
+    "net",
+    "build"
+  ],
+  "author": "Frank",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hattie019425/net/issues"
+  },
+  "homepage": "https://github.com/hattie019425/net#readme",
+  "dependencies": {
+    "reflect-metadata": "^0.1.12",
+    "ts-interface-checker": "^0.1.4"
+  },
+  "devDependencies": {
+    "gulp": "^3.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-debug": "^4.0.0",
+    "gulp-shell": "^0.6.5",
+    "mkdirp": "^0.5.1",
+    "ts-interface-builder": "^0.1.5"
+  }
+}
