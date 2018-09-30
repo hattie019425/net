@@ -1,6 +1,6 @@
 {
-  "name": "build",
-  "version": "1.0.1",
+  "name": "net-build",
+  "version": "1.0.7",
   "description": "Build toolkit for net",
   "main": "index.js",
   "scripts": {
@@ -22,14 +22,20 @@
   "homepage": "https://github.com/hattie019425/net#readme",
   "dependencies": {
     "reflect-metadata": "^0.1.12",
-    "ts-interface-checker": "^0.1.4"
-  },
-  "devDependencies": {
+    "ts-interface-checker": "^0.1.4",
     "gulp": "^3.0.0",
+    "gulp-util": "latest",
+    "through2": "latest",
+    "preprocess": "latest",
     "gulp-clean": "^0.4.0",
-    "gulp-debug": "^4.0.0",
+    "gulp-debug": "^3.0.0",
     "gulp-shell": "^0.6.5",
     "mkdirp": "^0.5.1",
-    "ts-interface-builder": "^0.1.5"
-  }
+    "ts-interface-builder": "^0.1.5",
+    "typescript": "^3.0.0"
+  },
+  "devDependencies": {},
+  "files": [
+    "index.js"
+  ]
 }
