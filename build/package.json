@@ -21,21 +21,23 @@
   },
   "homepage": "https://github.com/hattie019425/net#readme",
   "dependencies": {
-    "reflect-metadata": "^0.1.12",
-    "ts-interface-checker": "^0.1.4",
-    "gulp": "^3.0.0",
-    "gulp-util": "latest",
-    "through2": "latest",
-    "preprocess": "latest",
+    "gulp": "^3.9.1",
     "gulp-clean": "^0.4.0",
-    "gulp-debug": "^3.0.0",
+    "gulp-debug": "^4.0.0",
     "gulp-shell": "^0.6.5",
+    "gulp-typescript": "^5.0.0-alpha.3",
+    "gulp-util": "latest",
     "mkdirp": "^0.5.1",
+    "preprocess": "latest",
+    "q": "^1.5.1",
+    "run-sequence": "^2.2.1",
+    "through2": "^2.0.3",
     "ts-interface-builder": "^0.1.5",
+    "ts-interface-checker": "^0.1.4",
     "typescript": "^3.0.0"
   },
-  "devDependencies": {},
   "files": [
     "index.js"
-  ]
+  ],
+  "devDependencies": {}
 }
