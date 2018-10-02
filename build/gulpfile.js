@@ -5,7 +5,7 @@ var gutil = require('gulp-util');
 var ts = require('gulp-typescript');
 var clean = require('gulp-clean');
 var runSequence = require('run-sequence');
-var tsic = require('./src/plugin/gulp-ts-interface-compiler');
+var tic = require('./src/plugin/gulp-ts-interface-compiler');
 gulp.task('watch-compile-interface', function () {
     gulp.watch('src/**/*.i.ts', function (event) {
         console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
@@ -33,7 +33,7 @@ gulp.task('gen-ti-define', function (cb) {
     gulp.src('.tmp/ti/**/*.i.ts', { read: false })
         .pipe(debug())
         .pipe(gutil.buffer())
-        .pipe(tsic())
+        .pipe(tic())
         .on('finish', () => { cb(); });
 });
 

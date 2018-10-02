@@ -5,81 +5,82 @@ const gutil = require('gulp-util');
 const ts = require('gulp-typescript');
 const clean = require('gulp-clean');
 const runSequence = require('run-sequence');
-const tsic = require('./plugin');
+const tsiDefineGen = require('../plugin/tsi-define-generator');
+const merge = require('merge');
 
-const DEFAULT_SRC = '**/*.i.ts';
-const DEFAULT_DIST = 'dist/ti';
-const DEFAULT_TEMP = 'tmp/ti';
-const DEFAULT_TASK_NAME = 'net-tsic';
-const DEFAULT_SUB_TASK_NAMESPACE = 'net-tsic';
+const DEFAULT_OPTIONS = merge(require('./options'), { taskName: 'net-tic-all' })
+
 /**
  * Create the typescript interface compile task.
  * 
- * @param {*} taskName The name of the task. Default is 'net-tsic'.
+ * @param {*} taskName The name of the task. Default is 'net-tic'.
  * @param {*} src The source file pattern of the typescript interfaces. Default is '**\/*.i.ts'.
  * @param {*} dist The dist folder of the compile result. Default is 'dist/ti'
  * @param {*} temp The temp folder to keep the temp files during the compiling process.
  * Default is 'temp/ti'.
- * @param {*} subTaskNamespace The name space of the sub task. Default is 'net-tsic'. 
+ * @param {*} subTaskNamespace The name space of the sub task. Default is 'net-tic'. 
  *  Specify it when there's a conflict with other gulp tasks.
  */
-export function tsicTask(src, dist, temp, taskName, subTaskNamespace) {
-    // Use default parameters if not provided
-    src = src ? src : DEFAULT_SRC;
-    dist = dist ? dist : DEFAULT_DIST;
-    temp = temp ? temp : DEFAULT_TEMP;
-    taskName = taskName ? taskName : DEFAULT_TASK_NAME;
-    subTaskNamespace = subTaskNamespace ? subTaskNamespace : DEFAULT_SUB_TASK_NAMESPACE;
 
+module.exports = function (ops) {
+    // Use default parameters if not provided
+
+    ops = merge(DEFAULT_OPTIONS, ops);
+    console.log('options', ops);
+    // let src = optionValue('src');
+    // let dist = optionValue('dist');
+    // let temp = optionValue('temp');
+    // let taskName = optionValue('taskName');
+    // let subTaskNamespace = optionValue('subTaskNamespace');
     // Copy typescript interface source files to temp folder
     gulp.task(fullName('cp-ti'), function (cb) {
-        gulp.src([src, '!' + temp + '/**/*'], { read: true })
-            .pipe(debug())
-            .pipe(gulp.dest(temp))
+        gulp.src([ops.src, '!' + ops.temp + '/**/*', '!' + ops.dist + '/**/*'], { read: true })
+            // .pipe(debug())
+            .pipe(gulp.dest(ops.temp))
             .on('finish', () => { cb(); });
     });
 
     // Generate typescript interface defination 
     gulp.task(fullName('gen-ti-define'), function (cb) {
-        gulp.src('.tmp/ti/**/*.i.ts', { read: false })
-            .pipe(debug())
+        gulp.src(ops.temp + '/**/*.ts', { read: false })
+            // .pipe(debug())
             .pipe(gutil.buffer())
-            .pipe(tsic())
+            .pipe(tsiDefineGen())
             .on('finish', () => { cb(); });
     });
 
     // Compile typescript interface defination into javascript and output to dist folder
     gulp.task(fullName('compile-ti-define'), function (cb) {
-        gulp.src('.tmp/ti/**/*-ti.ts', { read: true })
-            .pipe(debug())
+        gulp.src(ops.temp + '/**/*-ti.ts', { read: true })
+            // .pipe(debug())
             .pipe(ts())
-            .pipe(gulp.dest('dist'))
+            .pipe(gulp.dest(ops.dist))
             .on('finish', () => { cb(); });
     });
 
     // Clean the dist folder
     gulp.task(fullName('clean-dist'), function (cb) {
-        gulp.src(['dist'], { read: false })
+        gulp.src(ops.dist, { read: false })
             .pipe(clean({ force: true }))
             .on('finish', () => { cb() });
     });
 
     // Clean the temp folder
-    gulp.task(fullName('clean-tmp'), function (cb) {
-        gulp.src('.tmp/ti', { read: false })
+    gulp.task(fullName('clean-temp'), function (cb) {
+        gulp.src(ops.temp, { read: false })
             .pipe(clean({ force: true }))
             .on('finish', () => { cb() });
     });
 
     // The main task
-    gulp.task(taskName, function () {
+    gulp.task(ops.taskName, function () {
         runSequence(
             fullName('clean-dist'),
-            fullName('clean-tmp'),
-            fullName('ti'),
+            fullName('clean-temp'),
+            fullName('cp-ti'),
             fullName('gen-ti-define'),
             fullName('compile-ti-define'),
-            fullName('clean-tmp')
+            fullName('clean-temp')
         );
     });
 
@@ -88,6 +89,7 @@ export function tsicTask(src, dist, temp, taskName, subTaskNamespace) {
      * @param {*} stemName the stem name of the sub task
      */
     function fullName(stemName) {
-        return subTaskNamespace + '-' + stemName;
+        return ops.subTaskNamespace + '-' + stemName;
     }
+
 }

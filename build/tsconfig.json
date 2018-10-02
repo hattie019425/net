@@ -20,7 +20,7 @@
     }
   },
   "include": [
-    "test/**/*", "src/tsic/gulp/plugin.js", "src/tsic/gulp/task.js"
+    "test/**/*", "gulpfile.js", "src/tic/gulp/plugin.js", "src/tic/gulp/task.js"
   ],
   "exclude": [
     "node_modules",

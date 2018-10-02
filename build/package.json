@@ -27,6 +27,7 @@
     "gulp-shell": "^0.6.5",
     "gulp-typescript": "^5.0.0-alpha.3",
     "gulp-util": "latest",
+    "merge": "^1.2.0",
     "mkdirp": "^0.5.1",
     "preprocess": "latest",
     "q": "^1.5.1",

@@ -1,11 +1,12 @@
 'use strict';
-var gutil = require('gulp-util');
-var through = require('through2');
-var pp = require('preprocess');
-var exec = require('child_process').exec;
-var mkdirp = require('mkdirp');
-var Q = require('q');
+const gutil = require('gulp-util');
+const through = require('through2');
+const pp = require('preprocess');
+const exec = require('child_process').exec;
+const mkdirp = require('mkdirp');
+const Q = require('q');
 const Vinyl = require('vinyl');
+const chalk = require('chalk');
 
 /**
  * Compile the interface source files into interface defination files.
@@ -13,7 +14,7 @@ const Vinyl = require('vinyl');
  * @param {*} srcFiles the interface source files.
  */
 function compileInterfaces(srcFiles) {
-    var deffered = Q.defer();
+    const deffered = Q.defer();
     // gutil.log('Start CMD ' + srcFilesCMD);
     exec('`npm bin`/ts-interface-builder ' + constructFileListStr(srcFiles), (error) => {
         if (error) {
@@ -64,9 +65,17 @@ function unsupportError(unsupportChunk) {
 module.exports = function (options, finalCb) {
     var allFiles = [];
     return through.obj(function (chunk, enc, cb) {
-        compileInterfaces(chunk).then((file) => {
-            // gutil.log('Done : ', file);
+        // gutil.log('chunk', chunk);
+        compileInterfaces(chunk).then((files) => {
+            if (Array.isArray(files)) {
+                gutil.log('There are', chalk.yellow(files.length), 'typescript interface defination files generated');
+            } else {
+                gutil.log('Typescript interface defination file',
+                    chalk.cyan('\'' + files.relative + '\''), 'generated');
+            }
             cb();
+        }).catch((error) => {
+            cb(error);
         });
     }, function (flushCB) {
         flushCB();
