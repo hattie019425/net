@@ -1,6 +1,6 @@
 {
   "name": "net-build",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Build toolkit for net",
   "main": "index.js",
   "scripts": {
