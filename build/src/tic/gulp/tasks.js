@@ -1,4 +1,5 @@
 const gulp = require('gulp');
+// const debug = require('gulp-debug');
 const dest = gulp.dest;
 const gutil = require('gulp-util');
 const tsc = require('gulp-typescript');
@@ -53,9 +54,13 @@ module.exports = function (opts) {
     gulp.task('net-tic-watch', ['net-tic-compile'], function () {
         // Callback mode, useful if any plugin in the pipeline depends on the `end`/`flush` event
         let watcher = watch(opts.src, function (event) {
+            // gutil.log(event);
             gulp.src('**/' + event.basename, { read: true })
+                // .pipe(debug())
                 .pipe(tidg())
+                // .pipe(debug())
                 .pipe(tsc())
+                // .pipe(debug())
                 .pipe(dest(opts.dist))
         });
 
